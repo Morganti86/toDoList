@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:,">
+    <title>toDoList</title>
+</head>
+
+<body>
+    <div class="day">DATE: <%= day %></div>
+    <div>
+        <form action="/selectList" method="POST">
+            <input class="selectbox pointer" type="submit" name="selectList" value="SELECT/CREATE LIST">
+            <!-- <button type="submit" name="remove" value="selectlist">SELECT/CREATE LIST</button> -->
+        </form>
+    </div>
+
+    <div class="box" id="heading">
+        <h1>
+            <%= listTitle %>
+        </h1>
+    </div>
+    
+    <div class="box">
+        <%tasks.forEach(task => {%>
+            <form action="/checkbox" method="POST">
+                <div class="item">
+                    <input type="hidden" name="listName" value="<%= listTitle %>">
+                    <input type="hidden" name="checkbox_id" value="<%= task._id %>">
+                    <input name="checkbox_id" type="checkbox" value="<%= task._id %>" onclick="submit()"
+                        <%=task.checked==true ? "checked" : "" %>>
+                    <p>
+                        <%= task.name %>
+                    </p>
+            </form>
+            <form class="ml" action="/remove" method="POST">
+                <input type="hidden" name="listName" value="<%= listTitle %>">
+                <button class="sm grey" type="submit" name="remove" value="<%= task._id %>">x</button>
+            </form>
+                </div>
+    <%})%>
+
+    </div>
+    <div class="box">
+        <form class="ml" action="/" method="post">
+            <input type="text" name="task" placeholder="New Task" autocomplete="off">
+            <button class="ml" type="submit" name="listName" value="<%= listTitle %>">+</button>
+        </form>
+    </div>
+
+        <form class="selectbox" action="/removeAll" method="post">
+            <button type="submit" name="listName" value="<%= listTitle %>">DELETE ALL TASKS</button>
+        </form>
+
+        
+
+</body>
+<footer>© Copyright Morganti86</footer>
+
+</html>

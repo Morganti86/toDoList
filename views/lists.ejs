@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="data:,">
+    <title>toDoList</title>
+</head>
+
+<body>
+    <div class="day">DATE: <%= day %>
+    </div>
+    <div class="box" id="heading">
+        <h1>SELECT LIST</h1>
+    </div>
+
+        <div class="box">
+            <% let i;%>
+            <%lists.forEach((list, index) => {%>
+                <%    i = index;%>
+                <div class="item">
+                    <p>
+                        <%= list %>
+                    </p>
+                    <div class="ml" >
+                        <form action="/listChoosen" method="POST">
+                            <button class="button" type="submit" name="listChoosen" value="<%= list %>">√</button>
+                        </form>
+                        <%if(i!=0){%>
+                        <form action="/listDelete" method="POST">
+                            <button class="button grey" type="submit" name="listDelete" value="<%= list %>">X</button>
+                        </form>
+                        <%}%>
+                    </div>
+                </div>
+                <%})%>
+        </div>
+        <div class="box">
+        <form class="ml" action="/createList" method="post">
+            <input type="text" name="newList" placeholder="New List" autocomplete="off">
+            <button class="ml" type="submit">+</button>
+        </form>
+    </div>
+</body>
+<footer>© Copyright Morganti86</footer>
+
+</html>
