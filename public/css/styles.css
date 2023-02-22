@@ -1,11 +1,9 @@
 html {
-    background-color: #E4E9FD;
-    background-image: -webkit-linear-gradient(70deg, #A683E3 35%, #5a5353 0%);
+    background-image: -webkit-linear-gradient(70deg, #A683E3 50%, #5a5353 0%);
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 500px;
+    min-height: -webkit-fill-available;
     font-family: cursive;
-
 }
 
 
