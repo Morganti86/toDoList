@@ -87,7 +87,7 @@ app.get("/:customListName", (req, res) => {
 
 
 app.post("/", function (req, res) {
-    const customListName = req.body.listName;
+    const customListName = _.capitalize(req.body.listName);
 
     if (req.body.task.trim().length != 0) {
         const addItem = req.body.task;
@@ -116,7 +116,7 @@ app.post("/", function (req, res) {
 
 app.post("/remove", function (req, res) {
     const removeItem = req.body.remove;
-    const listName = req.body.listName;
+    const listName = _.capitalize(req.body.listName);
 
     if (listName === "Today") {
         Item.findByIdAndRemove(removeItem, function (err) {
@@ -138,7 +138,7 @@ app.post("/remove", function (req, res) {
 
 
 app.post("/checkbox", function (req, res) {
-    const listName = req.body.listName;
+    const listName = _.capitalize(req.body.listName);
     let updateItem = req.body.checkbox_id;
     let status;
 
@@ -202,7 +202,7 @@ app.post("/checkbox", function (req, res) {
 
 app.post("/removeAll", function (req, res) {
     const removeItem = req.body.remove;
-    const listName = req.body.listName;
+    const listName = _.capitalize(req.body.listName);
 
     if (listName === "Today") {
         Item.remove({}, function (err) {
@@ -233,7 +233,7 @@ app.post("/selectList", function (req, res) {
 });
 
 app.post("/listChoosen", function (req, res) {
-    let listChoosen = req.body.listChoosen;
+    let listChoosen = _.capitalize(req.body.listChoosen);
     if (listChoosen === "Today") {
         res.redirect("/");
     } else {
@@ -263,12 +263,17 @@ app.post("/createList", function (req, res) {
     List.findOne({ name: newList }, function (err, foundList) {
         if (!err) {
             if (!foundList) {
-                //create new list
-                const list = new List({
+                if (newList != "Today") {
+                    //create new list
+                    const list = new List({
                     name: newList
                     // items: { name: "Have Luck!", checked: false }
-                })
-                list.save(() => res.redirect('/' + newList));
+                    })
+                    list.save(() => res.redirect('/' + newList));
+                } else {
+                    res.redirect('/');
+                }
+
             } else {
                 //show existing list
                 res.render("list", { day: day, listTitle: foundList.name, tasks: foundList.items });
@@ -279,9 +284,12 @@ app.post("/createList", function (req, res) {
     })
 });
 
-
-app.listen(3000, function () {
-    console.log("Server running on port 3000");
+app.listen(process.env.PORT || 3000, function () {
+    if(process.env.PORT) {
+        console.log("Server running on env");
+    } else {
+        console.log("Server running on port 3000");
+    }
 });
 
 // functions
